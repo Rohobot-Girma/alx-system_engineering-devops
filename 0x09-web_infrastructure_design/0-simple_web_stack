@@ -1,0 +1,34 @@
+
+Data Flow for Simple Web Infrastructure (www.foobar.com)
+Diagram :- https://drive.google.com/file/d/1Dwbc1I7g1zknurTp4OaKdy71uPEFhatI/view?usp=sharing
+
+1. User's Browser:
+   - The user types 'www.foobar.com' in Chrome or other browser.
+   - The browser initiates a request over HTTP or HTTPS.
+
+2. DNS (Domain Name System):
+   - The browser asks DNS to resolve 'www.foobar.com' to an IP address.
+   - A DNS record (type A for IPv4) maps 'www' to 8.8.8.8.
+
+3. Server (IP: 8.8.8.8):
+   - This is the physical or virtual machine that hosts all web components.
+   - It receives incoming requests from the internet.
+
+4. Nginx Web Server:
+   - Acts as the first point of contact on the server.
+   - Serves static content directly (HTML, CSS, JavaScript, images).
+   - Passes dynamic content requests to the application server.
+
+5. Application Server:
+   - Runs the backend application code.
+   - Processes dynamic requests by applying business logic.
+   - Communicates with the database to read or write data.
+
+6. MySQL Database:
+   - Stores all persistent data (e.g., user accounts, products, blog posts).
+   - Responds to queries from the application server.
+   - Sends data back to the application server, which formats it for the user.
+
+Overall Flow:
+Browser -> DNS -> Server -> Nginx Web Server -> Application Server -> MySQL Database
+(Data flows back in reverse for the response to reach the user.)

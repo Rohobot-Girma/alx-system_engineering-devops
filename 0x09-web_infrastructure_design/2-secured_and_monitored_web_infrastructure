@@ -1,0 +1,42 @@
+Secured and Monitored Web Infrastructure
+Diagram :- https://drive.google.com/file/d/1iiLJmBAQspHqyeHWwtfDnzyDt5OwsPWj/view?usp=sharing
+1. User's Browser:
+   - The end-user accesses www.foobar.com via HTTPS (encrypted).
+
+2. DNS:
+   - Resolves www.foobar.com to the public IP of the Load Balancer.
+
+3. Firewall #1:
+   - Edge firewall protecting the Load Balancer from unauthorized traffic.
+
+4. Load Balancer (HAProxy) with SSL Certificate:
+   - Terminates SSL (HTTPS) for incoming client connections.
+   - Distributes requests between App Server 1 and App Server 2.
+   - Can perform health checks and session routing.
+
+5. Firewall #2 and Firewall #3:
+   - Network-level protection for App Server 1 and App Server 2 respectively.
+   - Restrict access to necessary ports and trusted sources only.
+
+6. Application Servers (App Server 1 & App Server 2):
+   - Each runs Nginx and the application runtime.
+   - Handle static and dynamic requests and communicate with the database.
+   - Have monitoring agents installed to collect logs and metrics.
+
+7. MySQL Database (Primary + Replica):
+   - Primary handles all write operations; Replica(s) serve read traffic.
+   - Database replication keeps the Replica in sync for scalability and redundancy.
+
+8. Monitoring Clients (Agents):
+   - Installed on App Server 1, App Server 2, and the Database server.
+   - Agents collect metrics (CPU, memory, network), application logs, and Nginx access logs.
+   - Agents forward data securely to a central monitoring/observability platform (e.g., Sumo Logic, Datadog, Prometheus + Grafana).
+
+Traffic Flow Summary:
+- User -> DNS -> Firewall #1 -> Load Balancer (SSL Termination) -> Firewall #2/3 -> App Servers -> MySQL DB
+- Monitoring agents collect metrics/logs on each server and forward them to the monitoring service.
+
+Notes on considerations:
+- SSL termination at the load balancer simplifies cert management but can leave backend traffic unencrypted.
+- Single writable Primary DB is a write bottleneck and a SPOF; consider clustering or multi-primary setups for higher availability.
+- Running identical stacks on all servers increases risk of a common vulnerability affecting all nodes; prefer role separation and hardened images.

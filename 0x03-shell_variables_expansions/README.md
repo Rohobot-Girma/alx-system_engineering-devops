@@ -1,103 +1,74 @@
 # 0x03. Shell, init files, variables and expansions
 
-This project focuses on understanding how shell variables, environment variables, expansions, and other Bash features work. Each task explores specific commands and shell behaviors.
+This project covers variable manipulation, expansions, and basic shell scripting principles on Ubuntu 20.04. All scripts are compliant with the following constraints:
 
-## Tasks
+- All scripts are exactly 2 lines long
+- No usage of `&&`, `||`, `;`, `awk`, `sed`, or `bc`
+- Scripts must be executable and edited using `vi`, `vim`, or `emacs`
+- Each script ends with a new line
 
-### 0. <o>
-**File:** `0-alias`  
-Creates an alias `ls` that deletes all files in the current directory.  
-```bash
-alias ls='rm *'
-```
+## 📜 Scripts
 
----
+### `0-alias`
+Creates an alias named `ls` with the value `rm *`.
 
-### 1. Hello you
-**File:** `1-hello_you`  
-Prints `hello` followed by the current Linux user.  
-```bash
-echo "hello $(whoami)"
-```
+### `1-hello_you`
+Prints `hello` followed by the current Linux user.
 
----
-
-### 2. The path to success is to take massive, determined action
-**File:** `2-path`  
+### `2-path`
 Adds `/action` to the end of the `PATH` environment variable.
 
----
+### `3-paths`
+Counts the number of directories in the current `PATH`.
 
-### 3. If the path be beautiful, let us not ask where it leads
-**File:** `3-paths`  
-Counts the number of directories in the current `$PATH` using `tr` and `wc -l`.
+### `4-global_variables`
+Lists all environment variables.
 
----
+### `5-local_variables`
+Lists all local variables, environment variables, and functions.
 
-### 4. Global variables
-**File:** `4-global_variables`  
-Lists all the environment variables using `printenv`.
+### `6-create_local_variable`
+Creates a new local variable `BEST` with the value `School`.
 
----
+### `7-create_global_variable`
+Creates a global environment variable `BEST` with the value `School`.
 
-### 5. Local variables
-**File:** `5-local_variables`  
-Lists all local variables, environment variables, and functions using `set`.
+### `8-true_knowledge`
+Prints the result of `128 + $TRUEKNOWLEDGE`, assuming TRUEKNOWLEDGE is an environment variable.
 
----
+### `9-divide_and_rule`
+Prints the result of `POWER / DIVIDE`, both provided via environment variables.
 
-### 6. Local variable
-**File:** `6-create_local_variable`  
-Creates a local variable named `BEST` with value `School`.
+### `10-love_exponent_breath`
+Prints `BREATH` raised to the power `LOVE`, both passed as environment variables.
 
----
+### `11-binary_to_decimal`
+Converts a binary number in the `BINARY` environment variable to decimal.
 
-### 7. Global variable
-**File:** `7-create_global_variable`  
-Creates a global variable named `BEST` with value `School` using `export`.
+### `12-combinations`
+Prints all 2-letter combinations from `a` to `z`, excluding `oo`. One combination per line.
 
----
+### `13-print_float`
+Prints a floating-point number stored in `NUM`, rounded to two decimal places.
 
-### 8. Every addition to true knowledge is an addition to human power
-**File:** `8-true_knowledge`  
-Prints the result of `128 + $TRUEKNOWLEDGE`.
+### `100-decimal_to_hexadecimal`
+Converts a decimal number (from `DECIMAL` env variable) to hexadecimal.
 
----
+### `101-rot13`
+Applies rot13 encryption to standard input.
 
-### 9. Divide and rule
-**File:** `9-divide_and_rule`  
-Prints the result of `$POWER` divided by `$DIVIDE`.
+### `102-odd`
+Prints every other line from standard input, starting with the first.
 
----
-
-### 10. Love is anterior to life...
-**File:** `10-love_exponent_breath`  
-Prints `$BREATH` raised to the power of `$LOVE` using `**`.
+### `103-water_and_stir`
+Adds two custom base-8 encoded values (`WATER` and `STIR` from environment), and prints the result in base `bestchol`.
 
 ---
 
-### 11. There are 10 types of people...
-**File:** `11-binary_to_decimal`  
-Converts a binary number stored in `$BINARY` to decimal.
+## ✅ Example Usage
 
----
+```bash
+chmod +x 0-alias
+source ./0-alias
+ls  # Actually runs `rm *` due to alias
 
-### 12. Combination
-**File:** `12-combinations`  
-Prints all possible 2-letter lowercase combinations, excluding `oo`.
-
----
-
-### 13. Floats
-**File:** `13-print_float`  
-Prints a number with 2 decimal places from the variable `$NUM` using `printf`.
-
----
-
-## Notes
-
-- All scripts use `/bin/bash`
-- All scripts are exactly 2 lines long
-- No use of `awk`, `sed`, `bc`, `&&`, or `||`
-- Line endings are Unix-style (LF)
-- Tested on Ubuntu 20.04 LTS

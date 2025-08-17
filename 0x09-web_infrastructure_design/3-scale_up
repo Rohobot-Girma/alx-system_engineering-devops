@@ -1,0 +1,72 @@
+Enhanced Web Infrastructure
+Diagram :- https://drive.google.com/file/d/1VjgEOMHForfnW6hkwLqKg7Fa8HaACHJ9/view?usp=sharing
+
+1. User's Browser:
+   - The end-user accesses https://www.foobar.com via HTTPS (encrypted).
+   - Ensures secure communication over TLS.
+
+2. DNS:
+   - Resolves www.foobar.com to the public IP of the HAProxy Load Balancer Cluster (VIP).
+   - VIP (Virtual IP) points to both LB nodes for failover.
+
+3. Firewall #1:
+   - Edge firewall protecting the Load Balancers from unauthorized public traffic.
+   - Allows only HTTPS (TCP/443) and handles IP whitelisting or rate limiting.
+
+4. Load Balancer Cluster (HAProxy - LB1 and LB2):
+   - Two HAProxy instances in Active-Passive or Active-Active configuration.
+   - Exposed through a VIP (Virtual IP) for seamless failover and high availability.
+   - Terminates SSL (TLS) for incoming connections.
+   - Routes traffic to Web Servers using health checks and session affinity (if needed).
+   - Helps reduce downtime if one HAProxy node fails.
+
+5. Firewall #2:
+   - Protects Web Server Layer from unauthorized access.
+   - Only allows traffic from the Load Balancer subnet.
+
+6. Web Servers (Web Server 1 & Web Server 2):
+   - Run Nginx only (no app runtime).
+   - Serve static assets (HTML, CSS, JS, images).
+   - Reverse proxy dynamic requests to Application Servers.
+   - Decoupling web server improves modularity, security, and caching.
+
+7. Firewall #3:
+   - Protects Application Server Layer.
+   - Accepts traffic only from trusted Web Server IPs or subnets.
+
+8. Application Servers (App Server 1, App Server 2, App Server 3):
+   - Run only the application runtime (e.g., Node.js, Python, PHP).
+   - Handle business logic and API endpoints.
+   - Communicate with the backend database for data access.
+   - Adding App Server 3 improves horizontal scalability and performance under load.
+
+9. Firewall #4:
+   - Protects Database Layer.
+   - Only permits access from the Application Server subnet.
+
+10. Database Servers:
+   - **Primary DB Server** (write): Runs MySQL, handles all write operations.
+   - **Replica DB Server(s)** (read): MySQL configured for replication; handles read traffic.
+   - Separating DB from App/Web servers isolates data workloads and enhances performance/security.
+   - Ensures redundancy and improved read throughput.
+
+11. Monitoring Clients (Agents):
+   - Installed on all Web Servers, App Servers, DB Servers, and Load Balancers.
+   - Collect:
+     - System metrics: CPU, Memory, Disk I/O
+     - Application metrics: response times, request counts
+     - Web/Nginx logs, HAProxy stats, DB query logs
+   - Forward data securely to centralized observability stack (e.g., Prometheus + Grafana or Datadog).
+   - Enables proactive alerting, performance analysis, and troubleshooting.
+
+---
+
+📌 **Why Each Addition Was Made**
+
+- ➕ **HAProxy Cluster**: Prevents single point of failure at entry point; supports active-passive or active-active modes using VRRP or keepalived.
+- ➕ **Extra App Server (App Server 3)**: Enhances horizontal scalability; supports more concurrent users or API calls.
+- ➕ **Split Web / App / DB Servers**:
+  - **Web layer** handles static caching and TLS termination.
+  - **App layer** focuses purely on dynamic content and APIs.
+  - **DB layer** is isolated for performance, replication, and better security control.
+  - This separation supports better scaling, more precise security policies (firewall zoning), and improved fault isolation.

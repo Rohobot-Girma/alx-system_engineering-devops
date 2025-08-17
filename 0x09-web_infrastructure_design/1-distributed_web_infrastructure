@@ -1,0 +1,38 @@
+
+Distributed Web Infrastructure
+Diagram :- https://drive.google.com/file/d/1Hw9GKiw0PV5YshJ0pa4B57jhKAvkVE1m/view?usp=sharing
+
+1. User's Browser
+   - The user enters www.foobar.com in their web browser.
+
+2. DNS
+   - Resolves the domain name to the Load Balancer's IP address.
+
+3. Load Balancer (HAProxy)
+   - Receives incoming requests from users.
+   - Distributes them between two application servers using a load balancing algorithm (e.g., Round Robin).
+   - Helps improve performance and fault tolerance.
+
+4. Server 1: Nginx + Application Server
+   - Serves static content (HTML, CSS, JS) via Nginx.
+   - Passes dynamic requests to the application server (running backend code).
+   - Handles write operations to the Primary database.
+   - Can also perform read operations from the Replica database.
+
+5. Server 2: Nginx + Application Server
+   - Identical setup to Server 1.
+   - Processes requests from the Load Balancer.
+   - Handles write operations to the Primary database.
+   - Can also perform read operations from the Replica database.
+
+6. MySQL Primary Database (Write)
+   - Stores all application data.
+   - Handles all INSERT, UPDATE, DELETE operations.
+   - Replicates data to the Replica database.
+
+7. MySQL Replica Database (Read)
+   - Receives replicated data from the Primary database.
+   - Handles read-only queries to reduce load on the Primary database.
+
+Data Flow:
+User Browser → DNS → Load Balancer → (Server 1 or Server 2) → MySQL Primary (for writes) / MySQL Replica (for reads).
